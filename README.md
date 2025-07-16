@@ -17,3 +17,6 @@
 4. HTML Reporter
 
 5. GitHub for version control
+
+**Challenges**
+I noticed once i ran the workflow after an hour, I had to generate my token again to avoid failure of the test scripts.
