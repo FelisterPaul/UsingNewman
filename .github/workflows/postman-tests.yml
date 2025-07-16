@@ -2,11 +2,9 @@ name: Run Postman API Tests with Newman
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   postman-tests:
@@ -16,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -24,8 +22,17 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
+      - name: Create results directory
+        run: mkdir -p results
+
       - name: Run Postman Collection
         run: |
-          newman run FakeStoreAPI 🐱.json \
-          --reporters cli,json,html \
-          --reporter-html-export results/report.html
+          newman run "FakeStoreAPI 🐱.postman_collection.json" \
+            --reporters cli,json,html \
+            --reporter-html-export "results/report.html"
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-report
+          path: results/report.html
